@@ -1,0 +1,376 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "No description",
+    "version" : "1.0.0",
+    "title" : "SGIM"
+  },
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/sgimApi/v1/getToken" : {
+      "get" : {
+        "summary" : "get token",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "schema" : {
+              "type" : "string"
+            },
+            "examples" : {
+              "application/json" : "asgferasfgrgtsdgh435_$_[2!\"$"
+            }
+          },
+          "400" : {
+            "description" : "Status 400"
+          },
+          "500" : {
+            "description" : "Status 500"
+          }
+        }
+      }
+    },
+    "/sgimApi/v1/detections" : {
+      "post" : {
+        "summary" : "push detections",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : true,
+          "type" : "string",
+          "description" : "login token"
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Detections"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          },
+          "400" : {
+            "description" : "Status 400"
+          },
+          "401" : {
+            "description" : "Status 401"
+          },
+          "500" : {
+            "description" : "Status 500"
+          },
+          "503" : {
+            "description" : "Status 503"
+          }
+        }
+      }
+    },
+    "/sgimApi/v1/captures/compressedfile" : {
+      "post" : {
+        "summary" : "push file with captures",
+        "description" : "Push new captures since last post,  in gzip file format.\nFrequency required: 1 minute",
+        "consumes" : [ "application/zip" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : true,
+          "type" : "string",
+          "description" : "login token"
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "binary",
+            "description" : "Gzip file with new captures since last successful post.\nCaptures in JSON format:\n[\n{\t\n\t\"latitude\":\"-58.41340345\",\n\t\"longitude\":\"-34.55628222\",\n\t\"datetimestamp\":\"2019-03-23T18:51:59\",\n\"plate\":\"cf23df2207d99a74fbe169e3eba035e633b65d94\",\n  \"vehicletype\":\"moto\",\n  \"country\":\"Argentina\",\n  \"sourceid\":\"portico0001\"\n},\n{\t\n\t\"latitude\":\"-58.41343341\",\n\t\"longitude\":\"-34.55628232\",\n\t\"datetimestamp\":\"2019-03-23T18:52:12\",\n\"plate\":\"cf23df2207d99a74fbe169e3eba035e633b65d94\",\n\"vehicletype\":\"auto\",\n  \"country\":\"Argentina\",\n  \"sourceid\":\"portico0002\"\n},\n{\t\n\t\"latitude\":\"-58.41340340\",\n\t\"longitude\":\"-34.55458233\",\n\t\"datetimestamp\":\"2019-03-23T18:52:13\",\n\t\"plate\":\"cf23df2207d99a74fbe169e3eba035e633b65d94\",\n\t\"vehicletype\":\"camion\",\n  \"country\":\"Argentina\",\n  \"sourceid\":\"portico0003\",\n}\n]\n"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "400" : {
+            "description" : "corrupted file or bad JSON format",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "503" : {
+            "description" : "Status 503"
+          }
+        }
+      }
+    },
+    "/sgimApi/v1/captures" : {
+      "post" : {
+        "summary" : "push captures",
+        "description" : "Push new captures since last post.\nFrequency required: 1 minute",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : true,
+          "type" : "string",
+          "description" : "login token"
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Captures"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "400" : {
+            "description" : "corrupted file or bad JSON format",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "schema" : {
+              "$ref" : "#/definitions/CaptureResponse"
+            }
+          },
+          "503" : {
+            "description" : "Status 503"
+          }
+        }
+      }
+    },
+    "/sgimApi/v1/capture" : {
+      "get" : {
+        "summary" : "pull capture image",
+        "produces" : [ "image/jpeg" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "required" : true,
+          "type" : "number",
+          "description" : "returned id after a successful capture post operation(#api-Uploads-Post Capture)"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "schema" : {
+              "type" : "string",
+              "format" : "binary",
+              "description" : "requested capture image"
+            }
+          },
+          "401" : {
+            "description" : "Status 401"
+          },
+          "404" : {
+            "description" : "Status 404"
+          },
+          "500" : {
+            "description" : "Status 500"
+          },
+          "503" : {
+            "description" : "Status 503"
+          }
+        }
+      }
+    },
+    "/sgimApi/v1/avl/fleetvehicles" : {
+      "post" : {
+        "summary" : "update fleet vehicles positions",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "ASCCsd#$ASA$3"
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/FleetVehicle"
+            }
+          },
+          "x-examples" : {
+            "application/json" : "[{\n\t\t\"name\": \"Lesko 6\",\n\t\t\"code\": \"CODE6\",\n\t\t\"type\": \"Lesko\"\n\t\t\"lat\": 0.0,\n\t\t\"lon\": 0.0,\n\t\t\"status\": 1,\n\t\t\"speed\": 25.5,\n\t\t\"lastUpdate\": \"2018-05-15T16:12:00\",\n\t},\n\t{\n\t\t\"name\": \"NAME7\",\n\t\t\"code\": \"CODE7\",\n\t\t\"type\": \"Telvent\"\n\t\t\"lat\": 0.0,\n\t\t\"lon\": 0.0,\n\t\t\"status\": 1,\n\t\t\"speed\": 25.5,\n\t\t\"lastUpdate\": \"2018-05-15T16:12:00\",\n\t}]\n"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "schema" : {
+              "type" : "boolean"
+            },
+            "examples" : {
+              "application/json" : true
+            }
+          },
+          "400" : {
+            "description" : "Status 400"
+          },
+          "500" : {
+            "description" : "Status 500"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Detections" : {
+      "type" : "array",
+      "items" : {
+        "required" : [ "latitude", "longitude", "plate", "sourceId", "timestamp" ],
+        "type" : "object",
+        "properties" : {
+          "sourceId" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "yyyy-MM-dd'T'HH:mm:ss"
+          },
+          "plate" : {
+            "type" : "string"
+          },
+          "latitude" : {
+            "type" : "number"
+          },
+          "longitude" : {
+            "type" : "number"
+          },
+          "serialNumber" : {
+            "type" : "string"
+          }
+        }
+      },
+      "example" : "[\n{\t\n  \t\"sourceId\":\"lpr1\",\n\t\"timestamp\":\"2018-08-04T18:52:59\",\n    \"plate\":\"AA123KA\",\n    \"latitude\":-58.41340345,\n\t\"longitude\":-34.55628222,\n    \"serialNumber\":\"SN0001\"\n},\n{\t\n\t\"sourceId\":\"lpr2\",\n\t\"timestamp\":\"2019-08-04T18:52:59\",\n    \"plate\":\"AB123BB\",\n    \"latitude\":-58.41110340,\n\t\"longitude\":-34.55238220,\n    \"serialnumber\":\"SN0002\"\n},\n{\t\n\t\"sourceId\":\"device1\",\n\t\"timestamp\":\"2018-08-04T18:52:59\",\n    \"plate\":\"AC123CC\",\n    \"latitude\":-58.41220355,\n\t\"longitude\":-34.55628294,\n    \"serialnumber\":\"SN0003\"\n}\n]"
+    },
+    "CaptureResponse" : {
+      "type" : "object",
+      "properties" : {
+        "datetimestamp" : {
+          "type" : "string"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      },
+      "example" : "{\n  \"datetimestamp\":\"2018-11-04T18:53:59\",\n  \"msg\":\"Bad JSON Format\"\n}"
+    },
+    "Captures" : {
+      "type" : "array",
+      "items" : {
+        "required" : [ "latitude", "longitude", "plate", "timestamp" ],
+        "type" : "object",
+        "properties" : {
+          "latitude" : {
+            "type" : "number"
+          },
+          "longitude" : {
+            "type" : "number"
+          },
+          "timestamp" : {
+            "type" : "string"
+          },
+          "plate" : {
+            "type" : "string"
+          },
+          "vehicletype" : {
+            "type" : "string"
+          },
+          "country" : {
+            "type" : "string"
+          },
+          "sourceid" : {
+            "type" : "string"
+          }
+        }
+      },
+      "example" : "[\n{\t\n\t\"latitude\":-58.41340345,\n\t\"longitude\":-34.55628222,\n\t\"timestamp\":\"2019-03-23T18:51:59\",\n\"plate\":\"cf23df2207d99a74fbe169e3eba035e633b65d94\",\n  \"vehicletype\":\"moto\",\n  \"country\":\"034\",\n  \"sourceid\":\"portico0001\"\n},\n{\t\n\t\"latitude\":-58.41343341,\n\t\"longitude\":-34.55628232,\n\t\"timestamp\":\"2019-03-23T18:52:12\",\n\"plate\":\"cf23df2207d99a74fbe169e3eba035e633b65d94\",\n  \"vehicletype\":\"auto\",\n  \"country\":\"034\",\n  \"sourceid\":\"portico0002\"\n},\n{\t\n\t\"latitude\":-58.41340340,\n\t\"longitude\":-34.55458233,\n\t\"timestamp\":\"2019-03-23T18:52:13\",\n\t\"plate\":\"cf23df2207d99a74fbe169e3eba035e633b65d94\",\n  \"vehicletype\":\"camion\",\n  \"country\":\"034\",\n  \"sourceid\":\"portico0003\"\n}\n]\n"
+    },
+    "FleetVehicle" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "code" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string",
+          "enum" : [ "“Lesko”", "”Sutec”", "”AT”", "”Mant”", "”Rowing”", "”Telvent”", "\"Hawk\"", "\"Logitracker\"" ]
+        },
+        "lat" : {
+          "type" : "number"
+        },
+        "lon" : {
+          "type" : "number"
+        },
+        "status" : {
+          "type" : "number",
+          "description" : "0-> desconocido, 1->OK, 2->KO, -1->no existe"
+        },
+        "speed" : {
+          "type" : "number"
+        },
+        "lastUpdate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "YYYY-MM-DD’T’HH:mm:ss"
+        }
+      },
+      "example" : "{\r\n\t\t\"name\": \"NAME7\",\r\n\t\t\"code\": \"CODE7\",\r\n\t\t\"type\": \"Telvent\",\r\n\t\t\"lat\": 0.0,\r\n\t\t\"lon\": 0.0,\r\n\t\t\"status\": 1,\r\n\t\t\"speed\": 25.5,\r\n\t\t\"lastUpdate\": \"2018-05-15T16:12:00\"\r\n\t}\r\n"
+    }
+  }
+}
