@@ -6,9 +6,7 @@
     "description": "Definicion"
   },
   "servers": [
-    {
-      "url": "http://localhost:3000"
-    }
+    {}
   ],
   "paths": {
     "/sgimApi/v1/getToken/": {
@@ -48,9 +46,67 @@
         ]
       },
       "parameters": []
+    },
+    "/importer/avl/v1": {
+      "post": {
+        "summary": "create escooter ",
+        "tags": [],
+        "responses": {},
+        "operationId": "post-importer-avl-v1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/escooter"
+                }
+              }
+            }
+          },
+          "description": ""
+        }
+      }
     }
   },
   "components": {
-    "schemas": {}
+    "schemas": {
+      "escooter": {
+        "title": "escooter",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "code": "AVL_CODE",
+            "name": "AVL_NAME",
+            "description": "AVL_DESCRIPTION",
+            "type": {
+              "code": "AVL_TYPE_CODE",
+              "name": "AVL_TYPE_NAME"
+            },
+            "status": {
+              "code": "AVL_STATUS_CODE"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                0,
+                0
+              ]
+            },
+            "speed": 100,
+            "orientation": 0,
+            "timestamp": "2020-05-15T12:00:00"
+          }
+        },
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
 }
